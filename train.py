@@ -185,5 +185,5 @@ with tf.Graph().as_default():
                 print("\nEvaluation:")
                 dev_step(x_dev, y_dev, writer=dev_summary_writer)
             if current_step % FLAGS.checkpoint_every == 0:
-                path = saver.save(sess, '/home/mwh/CNN_text/aaa.ckpt', global_step=current_step)
+                path = saver.save(sess, './aaa.ckpt', global_step=current_step)
                 print("Saved model checkpoint to {}\n".format(path))
