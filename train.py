@@ -1,4 +1,3 @@
-import pickle
 import tensorflow as tf
 import numpy as np
 import os
@@ -9,13 +8,43 @@ import jieba
 from text_cnn import TextCNN
 from tensorflow.contrib import learn
 tf.flags.DEFINE_float('dev_sample_percetage', .1, 'Percentage of the training data to use for validation')
-tf.flags.DEFINE_string('positive_data_file', '/home/mwh/CNN_text/positive.txt', 'positive')
-tf.flags.DEFINE_string('negative_data_file', '/home/mwh/CNN_text/negative.txt', 'negative')
-tf.flags.DEFINE_string('zhongxing_data_file', '/home/mwh/CNN_text/zhongxing.txt', 'zhongxing')
-tf.flags.DEFINE_string('prediction_data_file', '/home/mwh/CNN_text/prediction.text', 'prediction')
+tf.flags.DEFINE_string('sample_0_data_file', '/home/geml/mwh/TextCNN/sample_0.txt', 'sample_0')
+tf.flags.DEFINE_string('sample_1_data_file', '/home/geml/mwh/TextCNN/sample_1.txt', 'sample_1')
+tf.flags.DEFINE_string('sample_2_data_file', '/home/geml/mwh/TextCNN/sample_2.txt', 'sample_2')
+tf.flags.DEFINE_string('sample_3_data_file', '/home/geml/mwh/TextCNN/sample_3.txt', 'sample_3')
+tf.flags.DEFINE_string('sample_4_data_file', '/home/geml/mwh/TextCNN/sample_4.txt', 'sample_4')
+tf.flags.DEFINE_string('sample_5_data_file', '/home/geml/mwh/TextCNN/sample_5.txt', 'sample_5')
+tf.flags.DEFINE_string('sample_6_data_file', '/home/geml/mwh/TextCNN/sample_6.txt', 'sample_6')
+tf.flags.DEFINE_string('sample_7_data_file', '/home/geml/mwh/TextCNN/sample_7.txt', 'sample_7')
+tf.flags.DEFINE_string('sample_8_data_file', '/home/geml/mwh/TextCNN/sample_8.txt', 'sample_8')
+tf.flags.DEFINE_string('sample_9_data_file', '/home/geml/mwh/TextCNN/sample_9.txt', 'sample_9')
+tf.flags.DEFINE_string('sample_10_data_file', '/home/geml/mwh/TextCNN/sample_10.txt', 'sample_10')
+tf.flags.DEFINE_string('sample_11_data_file', '/home/geml/mwh/TextCNN/sample_11.txt', 'sample_11')
+tf.flags.DEFINE_string('sample_12_data_file', '/home/geml/mwh/TextCNN/sample_12.txt', 'sample_12')
+tf.flags.DEFINE_string('sample_13_data_file', '/home/geml/mwh/TextCNN/sample_13.txt', 'sample_13')
+tf.flags.DEFINE_string('sample_14_data_file', '/home/geml/mwh/TextCNN/sample_14.txt', 'sample_14')
+tf.flags.DEFINE_string('sample_15_data_file', '/home/geml/mwh/TextCNN/sample_15.txt', 'sample_15')
+tf.flags.DEFINE_string('sample_16_data_file', '/home/geml/mwh/TextCNN/sample_16.txt', 'sample_16')
+tf.flags.DEFINE_string('sample_17_data_file', '/home/geml/mwh/TextCNN/sample_17.txt', 'sample_17')
+tf.flags.DEFINE_string('sample_18_data_file', '/home/geml/mwh/TextCNN/sample_18.txt', 'sample_18')
+tf.flags.DEFINE_string('sample_19_data_file', '/home/geml/mwh/TextCNN/sample_19.txt', 'sample_19')
+tf.flags.DEFINE_string('sample_20_data_file', '/home/geml/mwh/TextCNN/sample_20.txt', 'sample_20')
+tf.flags.DEFINE_string('sample_21_data_file', '/home/geml/mwh/TextCNN/sample_21.txt', 'sample_21')
+tf.flags.DEFINE_string('sample_22_data_file', '/home/geml/mwh/TextCNN/sample_22.txt', 'sample_22')
+tf.flags.DEFINE_string('sample_23_data_file', '/home/geml/mwh/TextCNN/sample_23.txt', 'sample_23')
+tf.flags.DEFINE_string('sample_24_data_file', '/home/geml/mwh/TextCNN/sample_24.txt', 'sample_24')
+tf.flags.DEFINE_string('sample_25_data_file', '/home/geml/mwh/TextCNN/sample_25.txt', 'sample_25')
+tf.flags.DEFINE_string('sample_26_data_file', '/home/geml/mwh/TextCNN/sample_26.txt', 'sample_26')
+tf.flags.DEFINE_string('sample_27_data_file', '/home/geml/mwh/TextCNN/sample_27.txt', 'sample_27')
+tf.flags.DEFINE_string('sample_28_data_file', '/home/geml/mwh/TextCNN/sample_28.txt', 'sample_28')
+tf.flags.DEFINE_string('sample_29_data_file', '/home/geml/mwh/TextCNN/sample_29.txt', 'sample_29')
+tf.flags.DEFINE_string('sample_30_data_file', '/home/geml/mwh/TextCNN/sample_30.txt', 'sample_30')
+tf.flags.DEFINE_string('sample_31_data_file', '/home/geml/mwh/TextCNN/sample_31.txt', 'sample_31')
+tf.flags.DEFINE_string('sample_32_data_file', '/home/geml/mwh/TextCNN/sample_32.txt', 'sample_32')
+tf.flags.DEFINE_string('sample_33_data_file', '/home/geml/mwh/TextCNN/sample_33.txt', 'sample_33')
 
 tf.flags.DEFINE_integer('embedding', 128, 'Dimensionality of character embedding')
-tf.flags.DEFINE_string('filter_sizes', '3,4,5', 'filter size')
+tf.flags.DEFINE_string('filter_sizes', '2,3,4,5', 'filter size')
 tf.flags.DEFINE_integer('num_filters', 128, 'num of filters')
 tf.flags.DEFINE_float('dropout_keep_prob', 0.5, 'Dropout')
 tf.flags.DEFINE_float('l2_reg_lambda', 0.0, 'L2')
@@ -23,7 +52,7 @@ tf.flags.DEFINE_integer("num_checkpoints", 5, "Number of checkpoints to store (d
 tf.flags.DEFINE_boolean("allow_soft_placement", True, "Allow device soft device placement")
 tf.flags.DEFINE_boolean("log_device_placement", False, "Log placement of ops on devices")
 tf.flags.DEFINE_integer('batch_size', 64, 'batch_size')
-tf.flags.DEFINE_integer('num_epochs', 200, 'number of epochs')
+tf.flags.DEFINE_integer('num_epochs', 2, 'number of epochs')
 tf.flags.DEFINE_integer('evaluate_every', 100, 'evaluate_every')
 tf.flags.DEFINE_integer('checkpoint_every', 100, 'saving...')
 FLAGS = tf.flags.FLAGS
@@ -31,7 +60,41 @@ FLAGS._parse_flags()
 #print('\nParametwea:')
 #for attr, values in sorted(FLAGS.__flags.items()):
 #    print('{}={}'.format(attr.upper(), values))
-x_text, y,i = data_helpers.load_data_and_labels(FLAGS.positive_data_file, FLAGS.negative_data_file, FLAGS.zhongxing_data_file,FLAGS.prediction_data_file)
+x_text, y,i = data_helpers.load_data_and_labels(FLAGS.sample_0_data_file        ,
+FLAGS.sample_1_data_file        ,
+FLAGS.sample_2_data_file        ,
+FLAGS.sample_3_data_file        ,
+FLAGS.sample_4_data_file        ,
+FLAGS.sample_5_data_file        ,
+FLAGS.sample_6_data_file        ,
+FLAGS.sample_7_data_file        ,
+FLAGS.sample_8_data_file        ,
+FLAGS.sample_9_data_file        ,
+FLAGS.sample_10_data_file       ,
+FLAGS.sample_11_data_file       ,
+FLAGS.sample_12_data_file       ,
+FLAGS.sample_13_data_file       ,
+FLAGS.sample_14_data_file       ,
+FLAGS.sample_15_data_file,
+FLAGS.sample_16_data_file,
+FLAGS.sample_17_data_file,
+FLAGS.sample_18_data_file,
+FLAGS.sample_19_data_file,
+FLAGS.sample_20_data_file,
+FLAGS.sample_21_data_file,
+FLAGS.sample_22_data_file,
+FLAGS.sample_23_data_file,
+FLAGS.sample_24_data_file,
+FLAGS.sample_25_data_file,
+FLAGS.sample_26_data_file,
+FLAGS.sample_27_data_file,
+FLAGS.sample_28_data_file,
+FLAGS.sample_29_data_file,
+FLAGS.sample_30_data_file,
+FLAGS.sample_31_data_file,
+FLAGS.sample_32_data_file,
+FLAGS.sample_33_data_file)
+
 max_document_length = max(len(list(jieba.cut(x,cut_all=False))) for x in x_text)
 #max_document_length = 10
 #print(max_document_length)
@@ -109,6 +172,9 @@ with tf.Graph().as_default():
             os.makedirs(checkpoint_dir)
         saver = tf.train.Saver(tf.global_variables(), max_to_keep=FLAGS.num_checkpoints)
         sess.run(tf.global_variables_initializer())
+
+
+
         def train_step(x_batch, y_batch):
             feed_dict = {
                 cnn.input_x: x_batch,
@@ -120,62 +186,61 @@ with tf.Graph().as_default():
             time_str = datetime.datetime.now().isoformat()
             print("{}: step {}, loss {:g}, acc {:g}".format(time_str, step, loss, accuracy))
             train_summary_writer.add_summary(summaries, step)
-        def dev_step(x_batch, y_batch, writer=None):
+        #def dev_step(x_batch, y_batch, writer=None):
             """
             Evaluates model on a dev set
             """
-            feed_dict = {
-                cnn.input_x: x_batch,
-                cnn.input_y: y_batch,
-                cnn.dropout_keep_prob: 0.5
-            }
-            step, summaries, loss, accuracy = sess.run(
-                [global_step, dev_summary_op, cnn.loss, cnn.accuracy]
-                ,feed_dict)
-            time_str = datetime.datetime.now().isoformat()
-            print("{}: step {}, loss {:g}, acc {:g}".format(time_str, step, loss, accuracy))
-            if writer:
-                writer.add_summary(summaries, step)
-        # def dev_step(x_batch, y_batch, writer=None):
-        #     num = 20
-        #     x_batch = x_batch.tolist()
-        #     y_batch = y_batch.tolist()
-        #     l = len(y_batch)
-        #     l_20 = int(l / num)
-        #     x_set = []
-        #     y_set = []
-        #     for i in range(num - 1):
-        #         x_temp = x_batch[i * l_20:(i + 1) * l_20]
-        #         x_set.append(x_temp)
-        #         y_temp = y_batch[i * l_20:(i + 1) * l_20]
-        #         y_set.append(y_temp)
-        #     x_temp = x_batch[(num - 1) * l_20:]
-        #     x_set.append(x_temp)
-        #     y_temp = y_batch[(num - 1) * l_20:]
-        #     y_set.append(y_temp)
-        #
-        #     # 每个batch验证集计算一下准确率，num个batch再平均
-        #     lis_loss = []
-        #     lis_accu = []
-        #     for i in range(num):
-        #         feed_dict = {
-        #             cnn.input_x: np.array(x_set[i]),
-        #             cnn.input_y: np.array(y_set[i]),
-        #             cnn.dropout_keep_prob: 1.0
-        #         }
-        #         step, summaries, loss, accuracy = sess.run(
-        #             [global_step, dev_summary_op, cnn.loss, cnn.accuracy],
-        #             feed_dict)
-        #         lis_loss.append(loss)
-        #         lis_accu.append(accuracy)
-        #         time_str = datetime.datetime.now().isoformat()
-        #         print("{}: step {}, loss {:g}, acc {:g}".format(time_str, step, loss, accuracy))
-        #         dev_summary_writer.add_summary(summaries, step)
-        #     print("test_loss and test_acc" + "\t\t" + str(sum(lis_loss) / num) + "\t\t" + str(sum(lis_accu) / num))
-        #     if writer:
-        #         writer.add_summary(summaries, step)
-        batches = data_helpers.batch_iter(
-            list(zip(x_train, y_train)), FLAGS.batch_size, FLAGS.num_epochs)
+         #   feed_dict = {
+          #      cnn.input_x: x_batch,
+           #     cnn.input_y: y_batch,
+            #    cnn.dropout_keep_prob: 0.5
+            #}
+            #step, summaries, loss, accuracy = sess.run(
+             #   [global_step, dev_summary_op, cnn.loss, cnn.accuracy]
+              #  ,feed_dict)
+            #time_str = datetime.datetime.now().isoformat()
+            #print("{}: step {}, loss {:g}, acc {:g}".format(time_str, step, loss, accuracy))
+            #if writer:
+             #   writer.add_summary(summaries, step)
+
+
+
+        def dev_step(x_batch, y_batch, writer=None):
+                num = 20
+                x_batch = x_batch.tolist()
+                y_batch = y_batch.tolist()
+                l = len(y_batch)
+                l_20 = int(l / num)
+                x_set = []
+                y_set = []
+                for i in range(num - 1):
+                        x_temp = x_batch[i * l_20:(i + 1) * l_20]
+                        x_set.append(x_temp)
+                        y_temp = y_batch[i * l_20:(i + 1) * l_20]
+                        y_set.append(y_temp)
+                x_temp = x_batch[(num - 1) * l_20:]
+                x_set.append(x_temp)
+                y_temp = y_batch[(num - 1) * l_20:]
+                y_set.append(y_temp)
+
+        # 每个batch验证集计算一下准确率，num个batch再平均
+                lis_loss = []
+                lis_accu = []
+                for i in range(num):
+                        feed_dict = {cnn.input_x: np.array(x_set[i]),cnn.input_y: np.array(y_set[i]),cnn.dropout_keep_prob: 1.0}
+                        step, summaries, loss, accuracy = sess.run([global_step, dev_summary_op, cnn.loss, cnn.accuracy],feed_dict)
+                        lis_loss.append(loss)
+                        lis_accu.append(accuracy)
+                        time_str = datetime.datetime.now().isoformat()
+                print("{}: step {}, loss {:g}, acc {:g}".format(time_str, step, loss, accuracy))
+                print("test_loss and test_acc" + "\t\t" + str(sum(lis_loss) / num) + "\t\t" + str(sum(lis_accu) / num))
+                if writer:
+                        writer.add_summary(summaries, step)
+
+
+
+
+        batches = data_helpers.batch_iter(list(zip(x_train, y_train)), FLAGS.batch_size, FLAGS.num_epochs)
         print(batches)
         for batch in batches:
             x_batch, y_batch = zip(*batch)
@@ -185,5 +250,5 @@ with tf.Graph().as_default():
                 print("\nEvaluation:")
                 dev_step(x_dev, y_dev, writer=dev_summary_writer)
             if current_step % FLAGS.checkpoint_every == 0:
-                path = saver.save(sess, './aaa.ckpt', global_step=current_step)
+                path = saver.save(sess, '/home/geml/mwh/TextCNN/aaa.ckpt', global_step=current_step)
                 print("Saved model checkpoint to {}\n".format(path))
